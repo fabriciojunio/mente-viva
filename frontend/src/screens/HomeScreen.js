@@ -68,6 +68,7 @@ export default function HomeScreen({ navigation }) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        style={styles.gamesScrollView}
         contentContainerStyle={styles.gamesScroll}
       >
         {GAMES.map(game => {
@@ -128,9 +129,10 @@ const styles = StyleSheet.create({
   statVal:       { fontSize:20, fontWeight:'900', color:COLORS.rose, marginTop:2 },
   statLbl:       { fontSize:11, color:COLORS.gray500, fontWeight:'700' },
   sectionTitle:  { fontSize:17, fontWeight:'900', color:COLORS.gray700, paddingHorizontal:14, paddingBottom:8 },
-  gamesScroll:   { paddingHorizontal:14, gap:10, paddingBottom:4 },
-  gameCard:      { width:106, borderRadius:RADIUS.lg, overflow:'hidden', ...SHADOW.card },
-  gameCardInner: { width:106, height:100, padding:10, alignItems:'center', justifyContent:'center', gap:6 },
+  gamesScrollView:{ height:112 },
+  gamesScroll:   { paddingHorizontal:14, gap:10, alignItems:'flex-start' },
+  gameCard:      { width:106, height:106, borderRadius:RADIUS.lg, overflow:'hidden', ...SHADOW.card },
+  gameCardInner: { width:106, height:106, padding:10, alignItems:'center', justifyContent:'center', gap:6 },
   newBadge:      { position:'absolute', top:5, right:5, backgroundColor:'rgba(0,0,0,0.35)', borderRadius:6, paddingHorizontal:5, paddingVertical:2 },
   newText:       { color:'white', fontSize:9, fontWeight:'900' },
   gameIcon:      { fontSize:34 },
