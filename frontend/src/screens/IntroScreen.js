@@ -26,73 +26,93 @@ export default function IntroScreen({ navigation }) {
   }
 
   return (
-    <LinearGradient colors={['#2D1B69', COLORS.lavDark, COLORS.rose]} style={styles.fill}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.fill}>
-        <View style={[styles.content, { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 20 }]}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
 
-          <Text style={styles.logo}>🧠</Text>
-          <Text style={styles.appName}>Mente Viva</Text>
-          <Text style={styles.tagline}>Exercícios diários para o seu cérebro! 🌸</Text>
+      {/* Cabeçalho com gradiente igual ao HomeScreen */}
+      <LinearGradient colors={[COLORS.lavDark, COLORS.rose]} style={styles.header}>
+        <Text style={styles.logo}>🧠</Text>
+        <Text style={styles.appName}>Mente Viva</Text>
+        <Text style={styles.tagline}>Exercícios divertidos para o seu cérebro! 🌸</Text>
+      </LinearGradient>
 
-          <View style={styles.scienceCard}>
-            <Text style={styles.scienceTitle}>📚 Por que jogar?</Text>
-            <Text style={styles.scienceText}>
-              Exercícios cognitivos diários podem reduzir o risco de Alzheimer em até 25% ao longo de 20 anos!
-            </Text>
-            <Text style={styles.scienceSource}>— Estudo ACTIVE, Alzheimer's & Dementia, 2026</Text>
-          </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.body}>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Qual é o seu nome, querida? 💕</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu nome aqui..."
-              placeholderTextColor="rgba(255,255,255,0.55)"
-              value={name}
-              onChangeText={setName}
-              maxLength={50}
-              autoCapitalize="words"
-              returnKeyType="done"
-              onSubmitEditing={handleStart}
-            />
-          </View>
-
-          <TouchableOpacity
-            style={[styles.startBtn, loading && styles.startBtnDisabled]}
-            onPress={handleStart}
-            disabled={loading}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.startBtnText}>{loading ? 'Um momento... ⏳' : 'Começar! 🌟'}</Text>
-          </TouchableOpacity>
-
-          <View style={styles.notesRow}>
-            <Text style={styles.note}>✅ Sem internet</Text>
-            <Text style={styles.note}>🔒 Dados no celular</Text>
-          </View>
-
+        {/* Card de ciência */}
+        <View style={styles.scienceCard}>
+          <Text style={styles.scienceTitle}>📚 Por que jogar?</Text>
+          <Text style={styles.scienceText}>
+            Exercícios cognitivos diários podem reduzir o risco de Alzheimer em até 25% ao longo de 20 anos!
+          </Text>
+          <Text style={styles.scienceSource}>— Estudo ACTIVE, Alzheimer's & Dementia, 2026</Text>
         </View>
+
+        {/* Input */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Qual é o seu nome, querida? 💕</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu nome aqui..."
+            placeholderTextColor={COLORS.gray500}
+            value={name}
+            onChangeText={setName}
+            maxLength={50}
+            autoCapitalize="words"
+            returnKeyType="done"
+            onSubmitEditing={handleStart}
+          />
+        </View>
+
+        {/* Botão */}
+        <TouchableOpacity
+          style={[styles.startBtnWrap, loading && { opacity:0.7 }]}
+          onPress={handleStart}
+          disabled={loading}
+          activeOpacity={0.85}
+        >
+          <LinearGradient colors={[COLORS.lavDark, COLORS.rose]} style={styles.startBtn}>
+            <Text style={styles.startBtnText}>{loading ? 'Um momento... ⏳' : 'Começar! 🌟'}</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+
+        {/* Notas */}
+        <View style={styles.notesRow}>
+          <View style={styles.note}>
+            <Text style={styles.noteText}>✅ Sem internet</Text>
+          </View>
+          <View style={styles.note}>
+            <Text style={styles.noteText}>🔒 Dados no celular</Text>
+          </View>
+        </View>
+
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  fill:         { flex:1 },
-  content:      { flex:1, alignItems:'center', paddingHorizontal:28, justifyContent:'center', gap:16 },
-  logo:         { fontSize:72 },
-  appName:      { fontSize:46, fontWeight:'900', color:'white', textShadowColor:'rgba(0,0,0,0.2)', textShadowOffset:{width:0,height:2}, textShadowRadius:8, marginTop:-8 },
-  tagline:      { fontSize:16, color:'rgba(255,255,255,0.9)', fontWeight:'700', textAlign:'center' },
-  scienceCard:  { backgroundColor:'rgba(255,255,255,0.15)', borderRadius:RADIUS.lg, padding:16, width:'100%', borderWidth:1, borderColor:'rgba(255,255,255,0.25)' },
-  scienceTitle: { color:'white', fontWeight:'900', fontSize:14, marginBottom:6 },
-  scienceText:  { color:'rgba(255,255,255,0.92)', fontSize:13, lineHeight:20 },
-  scienceSource:{ color:'rgba(255,255,255,0.55)', fontSize:11, marginTop:6, fontStyle:'italic' },
-  inputGroup:   { width:'100%', gap:8 },
-  inputLabel:   { color:'rgba(255,255,255,0.9)', fontWeight:'800', fontSize:15 },
-  input:        { backgroundColor:'rgba(255,255,255,0.2)', borderRadius:RADIUS.full, paddingHorizontal:24, paddingVertical:14, fontSize:20, fontWeight:'900', color:'white', textAlign:'center', borderWidth:2, borderColor:'rgba(255,255,255,0.35)' },
-  startBtn:     { backgroundColor:'white', borderRadius:RADIUS.full, paddingVertical:16, width:'100%', alignItems:'center', ...SHADOW.strong },
-  startBtnDisabled: { opacity:0.7 },
-  startBtnText: { fontSize:20, fontWeight:'900', color:COLORS.lavDark },
-  notesRow:     { flexDirection:'row', gap:20 },
-  note:         { color:'rgba(255,255,255,0.7)', fontSize:13, fontWeight:'600' },
+  container:    { flex:1, backgroundColor:COLORS.bg },
+
+  header:       { paddingTop:20, paddingBottom:28, paddingHorizontal:24, alignItems:'center', gap:6 },
+  logo:         { fontSize:64 },
+  appName:      { fontSize:40, fontWeight:'900', color:'white', textShadowColor:'rgba(0,0,0,0.25)', textShadowOffset:{width:0,height:2}, textShadowRadius:6 },
+  tagline:      { fontSize:15, color:'rgba(255,255,255,0.88)', fontWeight:'700', textAlign:'center' },
+
+  body:         { flex:1, padding:20, justifyContent:'center', gap:18 },
+
+  scienceCard:  { backgroundColor:COLORS.white, borderRadius:RADIUS.lg, padding:18, ...SHADOW.card },
+  scienceTitle: { color:COLORS.text, fontWeight:'900', fontSize:14, marginBottom:8 },
+  scienceText:  { color:COLORS.gray700, fontSize:13, lineHeight:20 },
+  scienceSource:{ color:COLORS.gray500, fontSize:11, marginTop:6, fontStyle:'italic' },
+
+  inputGroup:   { gap:8 },
+  inputLabel:   { color:COLORS.gray700, fontWeight:'800', fontSize:15 },
+  input:        { backgroundColor:COLORS.white, borderRadius:RADIUS.full, paddingHorizontal:22, paddingVertical:14, fontSize:18, fontWeight:'800', color:COLORS.text, borderWidth:2, borderColor:COLORS.gray300, ...SHADOW.card },
+
+  startBtnWrap: { borderRadius:RADIUS.full, overflow:'hidden', ...SHADOW.strong },
+  startBtn:     { paddingVertical:16, alignItems:'center' },
+  startBtnText: { fontSize:20, fontWeight:'900', color:'white' },
+
+  notesRow:     { flexDirection:'row', gap:10 },
+  note:         { flex:1, backgroundColor:COLORS.white, borderRadius:RADIUS.md, padding:10, alignItems:'center', ...SHADOW.card },
+  noteText:     { color:COLORS.gray700, fontSize:13, fontWeight:'700' },
 });
