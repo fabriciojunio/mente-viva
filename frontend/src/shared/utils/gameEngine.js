@@ -256,14 +256,12 @@ export const WORDSEARCH_THEMES = {
   ],
 };
 
-// Direções possíveis para colocar palavras na grade
+// Somente horizontal e vertical — sem diagonais
 const DIRECTIONS = [
   [0,1],   // →
   [0,-1],  // ←
   [1,0],   // ↓
   [-1,0],  // ↑
-  [1,1],   // ↘
-  [1,-1],  // ↙
 ];
 
 export const WordSearchEngine = {
