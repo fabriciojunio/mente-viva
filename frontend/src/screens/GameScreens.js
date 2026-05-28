@@ -14,10 +14,17 @@ export function MemoryGame({ route, navigation }) {
   const insets    = useSafeAreaInsets();
   const [state, setState]   = useState(() => MemoryEngine.setup(level));
   const [score, setScore]   = useState(0);
+  const [revealed, setRevealed] = useState(false);
   const lock    = useRef(false);
   const startAt = useRef(Date.now());
+  const scoreRef = useRef(0);
 
-  const timer = useGameTimer(level, () => finish(score));
+  const timer = useGameTimer(level, () => {
+    setRevealed(true);
+    setTimeout(() => {
+      navigation.replace('Result', { game:'memory', level, score:scoreRef.current, durationMs:Date.now()-startAt.current });
+    }, 2000);
+  });
 
   function finish(s) {
     timer.stop();
@@ -31,6 +38,7 @@ export function MemoryGame({ route, navigation }) {
     if (next.lastResult === 'match') {
       const pts = MemoryEngine.calcScore(next.pairsFound, timer.secs, level);
       setScore(pts);
+      scoreRef.current = pts;
       if (MemoryEngine.isComplete(next)) setTimeout(() => finish(pts), 400);
     }
     if (next.lastResult === 'mismatch') {
@@ -51,8 +59,12 @@ export function MemoryGame({ route, navigation }) {
       <View style={mem.grid}>
         {state.cards.map(card => (
           <TouchableOpacity key={card.id} onPress={()=>tap(card.id)} activeOpacity={0.85}
-            style={[mem.card, {width:cardSize,height:cardSize}, card.matched&&mem.cardMatched, card.flipped&&!card.matched&&mem.cardFlipped]}>
-            <Text style={mem.cardText}>{card.flipped||card.matched ? card.emoji : '🌸'}</Text>
+            style={[mem.card, {width:cardSize,height:cardSize},
+              card.matched && mem.cardMatched,
+              card.flipped && !card.matched && mem.cardFlipped,
+              revealed && !card.matched && !card.flipped && mem.cardRevealed,
+            ]}>
+            <Text style={mem.cardText}>{card.flipped || card.matched || revealed ? card.emoji : '🌸'}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -66,8 +78,9 @@ const mem = StyleSheet.create({
   infoText: { fontSize:15, fontWeight:'700', color:COLORS.gray700 },
   grid:     { flex:1, flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignItems:'center', padding:12, gap:8 },
   card:     { borderRadius:14, alignItems:'center', justifyContent:'center', backgroundColor:COLORS.rose, ...SHADOW.card },
-  cardMatched:{ backgroundColor:'#14532D' },
-  cardFlipped:{ backgroundColor:COLORS.white },
+  cardMatched:  { backgroundColor:'#14532D' },
+  cardFlipped:  { backgroundColor:COLORS.white },
+  cardRevealed: { backgroundColor:'#7F1D1D' },
   cardText: { fontSize:28 },
 });
 
@@ -105,7 +118,14 @@ export function SpeedGame({ route, navigation }) {
           <Text style={spd.question}>Este emoji é IGUAL ao anterior?</Text>
           <Text style={spd.current}>{gs.current||'🎮'}</Text>
           <Text style={spd.prev}>Anterior: <Text style={spd.prevEmoji}>{gs.prev||'—'}</Text></Text>
-          {fb && <Text style={spd.fb}>{fb==='correct'?'✅':'❌'}</Text>}
+          {fb && (
+            <>
+              <Text style={spd.fb}>{fb==='correct'?'✅':'❌'}</Text>
+              {fb==='wrong' && (
+                <Text style={spd.fbHint}>Era: {gs.current===gs.prev?'IGUAL':'DIFERENTE'}</Text>
+              )}
+            </>
+          )}
         </View>
         <View style={spd.btnRow}>
           <TouchableOpacity onPress={()=>answer(true)} activeOpacity={0.85} style={spd.btnWrap}>
@@ -133,6 +153,7 @@ const spd = StyleSheet.create({
   prev:     { fontSize:15, color:COLORS.gray500, fontWeight:'600' },
   prevEmoji:{ fontSize:24 },
   fb:       { fontSize:48, position:'absolute', top:8, right:16 },
+  fbHint:   { fontSize:15, fontWeight:'900', color:COLORS.error, marginTop:4 },
   btnRow:   { flexDirection:'row', gap:14, width:'100%' },
   btnWrap:  { flex:1 },
   btn:      { borderRadius:RADIUS.lg, padding:22, alignItems:'center', ...SHADOW.strong },
@@ -281,7 +302,12 @@ export function StroopGame({ route, navigation }) {
         <View style={str.box}>
           <Text style={str.question}>{cur.question}</Text>
           <Text style={[str.word, { color:cur.inkHex }]}>{cur.word}</Text>
-          {fb && <Text style={str.fb}>{fb}</Text>}
+          {fb && (
+            <>
+              <Text style={str.fb}>{fb}</Text>
+              {fb==='❌' && <Text style={str.fbHint}>Era: {cur.correct}</Text>}
+            </>
+          )}
         </View>
         <View style={str.grid}>
           {cur.options.map(opt => (
@@ -303,6 +329,7 @@ const str = StyleSheet.create({
   question: { fontSize:18, fontWeight:'700', color:COLORS.gray700, textAlign:'center' },
   word:     { fontSize:54, fontWeight:'900', letterSpacing:-1 },
   fb:       { fontSize:44, position:'absolute', top:8, right:16 },
+  fbHint:   { fontSize:16, fontWeight:'900', color:COLORS.error, marginTop:4 },
   grid:     { flexDirection:'row', flexWrap:'wrap', gap:12, justifyContent:'center', width:'100%' },
   opt:      { width:'46%', borderRadius:RADIUS.lg, padding:20, alignItems:'center', ...SHADOW.strong },
   optText:  { fontSize:17, fontWeight:'900', color:'white' },
@@ -380,9 +407,10 @@ import { WordEngine } from '../shared/utils/gameEngine';
 export function WordGame({ route, navigation }) {
   const { level } = route.params;
   const insets    = useSafeAreaInsets();
-  const [state, setState] = useState(() => WordEngine.setup(level));
-  const [score, setScore]  = useState(0);
-  const [done, setDone]    = useState(false);
+  const [state, setState]   = useState(() => WordEngine.setup(level));
+  const [score, setScore]   = useState(0);
+  const [done, setDone]     = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const startAt = useRef(Date.now());
 
   function finish(s) { navigation.replace('Result', { game:'word', level, score:s, durationMs:Date.now()-startAt.current }); }
@@ -397,7 +425,8 @@ export function WordGame({ route, navigation }) {
       setTimeout(()=>finish(pts), 900);
     } else if (next.lastResult==='lost') {
       setDone(true); Vibration.vibrate(200);
-      setTimeout(()=>finish(0), 1400);
+      setRevealed(true);
+      setTimeout(()=>finish(0), 2500);
     } else if (next.lastResult==='wrong') Vibration.vibrate(80);
   }
 
@@ -411,7 +440,10 @@ export function WordGame({ route, navigation }) {
           ))}
         </View>
         <View style={wrd.wordBox}>
-          <Text style={wrd.display}>{WordEngine.getDisplay(state)}</Text>
+          <Text style={[wrd.display, revealed && { color: COLORS.error }]}>
+            {revealed ? state.word : WordEngine.getDisplay(state)}
+          </Text>
+          {revealed && <Text style={wrd.revealedLabel}>A palavra era essa! ☝️</Text>}
         </View>
         <View style={wrd.clueBox}>
           <Text style={wrd.clueLabel}>💡 Dica</Text>
@@ -442,7 +474,8 @@ const wrd = StyleSheet.create({
   dot:       { width:16, height:16, borderRadius:8, backgroundColor:COLORS.gray300 },
   dotUsed:   { backgroundColor:COLORS.rose },
   wordBox:   { backgroundColor:COLORS.white, borderRadius:RADIUS.lg, padding:18, width:'100%', alignItems:'center', ...SHADOW.card },
-  display:   { fontSize:34, fontWeight:'900', letterSpacing:12, color:COLORS.text },
+  display:       { fontSize:34, fontWeight:'900', letterSpacing:12, color:COLORS.text },
+  revealedLabel: { fontSize:13, fontWeight:'700', color:COLORS.error, marginTop:6 },
   clueBox:   { backgroundColor:'#1E2A3A', borderRadius:RADIUS.lg, padding:14, width:'100%', borderLeftWidth:4, borderLeftColor:COLORS.sky },
   clueLabel: { fontSize:14, fontWeight:'900', color:COLORS.sky },
   clueText:  { fontSize:15, color:COLORS.gray700, lineHeight:22, marginTop:4 },
