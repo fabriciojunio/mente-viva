@@ -4,6 +4,7 @@
     "slug": "mente-viva",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "splash": {
       "backgroundColor": "#FF6B9D"
     },
@@ -11,6 +12,7 @@
       "package": "com.menteviva.app",
       "versionCode": 1,
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FF6B9D"
       },
       "permissions": []
