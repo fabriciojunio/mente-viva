@@ -258,10 +258,10 @@ const styles = StyleSheet.create({
   wordListTitle: { fontSize:15, fontWeight:'800', color:COLORS.gray700, marginBottom:10 },
   wordChips:     { flexDirection:'row', flexWrap:'wrap', gap:8 },
   wordChip:      { backgroundColor:COLORS.white, borderRadius:RADIUS.full, paddingHorizontal:14, paddingVertical:7, borderWidth:2, borderColor:COLORS.gray300, ...SHADOW.card },
-  wordChipFound: { backgroundColor:'#D1FAE5', borderColor:COLORS.mintDark },
+  wordChipFound: { backgroundColor:'#14532D', borderColor:COLORS.mint },
   wordChipText:  { fontSize:14, fontWeight:'700', color:COLORS.gray700 },
   wordChipTextFound: { color:COLORS.mintDark },
 
-  scienceNote:   { margin:14, marginTop:4, backgroundColor:'#F0FDFA', borderRadius:RADIUS.lg, padding:14, borderLeftWidth:4, borderLeftColor:COLORS.tealDark },
+  scienceNote:   { margin:14, marginTop:4, backgroundColor:'#0F2420', borderRadius:RADIUS.lg, padding:14, borderLeftWidth:4, borderLeftColor:COLORS.teal },
   scienceText:   { fontSize:13, color:COLORS.gray700, lineHeight:20 },
 });

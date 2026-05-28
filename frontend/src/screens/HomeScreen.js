@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -15,7 +15,6 @@ export default function HomeScreen({ navigation }) {
   const [stats,  setStats]    = useState({ totalGames:0, totalPoints:0, streakDays:0, bestScore:0 });
   const [brain,  setBrain]    = useState({});
   const [tip,    setTip]      = useState('');
-  const [refresh,setRefresh]  = useState(false);
 
   async function load() {
     const [p, s, b, t] = await Promise.all([
@@ -28,8 +27,6 @@ export default function HomeScreen({ navigation }) {
 
   useFocusEffect(useCallback(()=>{ load(); }, []));
 
-  async function onRefresh() { setRefresh(true); await load(); setRefresh(false); }
-
   const hour  = new Date().getHours();
   const greet = hour<12?'Bom dia ☀️':hour<18?'Boa tarde 🌤️':'Boa noite 🌙';
 
@@ -41,7 +38,7 @@ export default function HomeScreen({ navigation }) {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} tintColor={COLORS.rose} />}
+        scrollEnabled={false}
       >
         {/* Birthday banner */}
         {isBday && (
@@ -184,8 +181,8 @@ const styles = StyleSheet.create({
   barBg:        { flex:1, height:10, backgroundColor:COLORS.gray200, borderRadius:10, overflow:'hidden' },
   barFill:      { height:'100%', borderRadius:10 },
   brainPct:     { fontSize:13, fontWeight:'800', width:36, textAlign:'right' },
-  tipCard:      { margin:14, marginTop:0, backgroundColor:'#EFF6FF', borderRadius:RADIUS.lg, padding:16, borderLeftWidth:4, borderLeftColor:COLORS.sky },
-  tipTitle:     { fontSize:14, fontWeight:'900', color:COLORS.skyDark, marginBottom:6 },
+  tipCard:      { margin:14, marginTop:0, backgroundColor:'#1E2A3A', borderRadius:RADIUS.lg, padding:16, borderLeftWidth:4, borderLeftColor:COLORS.sky },
+  tipTitle:     { fontSize:14, fontWeight:'900', color:COLORS.sky, marginBottom:6 },
   tipText:      { fontSize:13, color:COLORS.gray700, lineHeight:20 },
   profileBtn:   { margin:14, marginTop:4, backgroundColor:COLORS.white, borderRadius:RADIUS.full, padding:16, alignItems:'center', ...SHADOW.card },
   profileBtnText:{ fontSize:16, fontWeight:'800', color:COLORS.roseDark },

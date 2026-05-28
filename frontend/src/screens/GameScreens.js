@@ -2,7 +2,7 @@
 // MemoryGame.js
 // ─────────────────────────────────────────────────────────────
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Vibration } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Vibration } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, RADIUS, SHADOW } from '../shared/theme';
 import { MemoryEngine } from '../shared/utils/gameEngine';
@@ -66,7 +66,7 @@ const mem = StyleSheet.create({
   infoText: { fontSize:15, fontWeight:'700', color:COLORS.gray700 },
   grid:     { flex:1, flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignItems:'center', padding:12, gap:8 },
   card:     { borderRadius:14, alignItems:'center', justifyContent:'center', backgroundColor:COLORS.rose, ...SHADOW.card },
-  cardMatched:{ backgroundColor:'#D1FAE5' },
+  cardMatched:{ backgroundColor:'#14532D' },
   cardFlipped:{ backgroundColor:COLORS.white },
   cardText: { fontSize:28 },
 });
@@ -241,7 +241,7 @@ const seq_s = StyleSheet.create({
   seqDisplay:{ fontSize:44, letterSpacing:6 },
   slots:    { flexDirection:'row', gap:10, flexWrap:'wrap', justifyContent:'center' },
   slot:     { width:56, height:56, borderRadius:14, backgroundColor:COLORS.gray200, alignItems:'center', justifyContent:'center', borderWidth:2, borderColor:COLORS.gray300 },
-  slotFilled:{ borderColor:COLORS.rose, backgroundColor:'#FFF0F5' },
+  slotFilled:{ borderColor:COLORS.rose, backgroundColor:'#2A1520' },
   slotText: { fontSize:28 },
   optGrid:  { flexDirection:'row', flexWrap:'wrap', gap:10, justifyContent:'center' },
   opt:      { width:62, height:62, borderRadius:16, backgroundColor:COLORS.white, alignItems:'center', justifyContent:'center', ...SHADOW.card },
@@ -347,8 +347,8 @@ export function MathGame({ route, navigation }) {
         <View style={math.grid}>
           {prob.options.map((opt,i) => {
             let bg = COLORS.white;
-            if (answered && chosen===opt) bg = opt===prob.answer?'#D1FAE5':'#FEE2E2';
-            if (answered && opt===prob.answer && chosen!==opt) bg='#D1FAE5';
+            if (answered && chosen===opt) bg = opt===prob.answer?'#14532D':'#7F1D1D';
+            if (answered && opt===prob.answer && chosen!==opt) bg='#14532D';
             return (
               <TouchableOpacity key={i} onPress={()=>answer(opt)} style={[math.opt,{backgroundColor:bg}]} activeOpacity={0.85}>
                 <Text style={math.optText}>{opt}</Text>
@@ -443,8 +443,8 @@ const wrd = StyleSheet.create({
   dotUsed:   { backgroundColor:COLORS.rose },
   wordBox:   { backgroundColor:COLORS.white, borderRadius:RADIUS.lg, padding:18, width:'100%', alignItems:'center', ...SHADOW.card },
   display:   { fontSize:34, fontWeight:'900', letterSpacing:12, color:COLORS.text },
-  clueBox:   { backgroundColor:'#EFF6FF', borderRadius:RADIUS.lg, padding:14, width:'100%', borderLeftWidth:4, borderLeftColor:COLORS.sky },
-  clueLabel: { fontSize:14, fontWeight:'900', color:COLORS.skyDark },
+  clueBox:   { backgroundColor:'#1E2A3A', borderRadius:RADIUS.lg, padding:14, width:'100%', borderLeftWidth:4, borderLeftColor:COLORS.sky },
+  clueLabel: { fontSize:14, fontWeight:'900', color:COLORS.sky },
   clueText:  { fontSize:15, color:COLORS.gray700, lineHeight:22, marginTop:4 },
   wrong:     { fontSize:14, color:COLORS.error, fontWeight:'700' },
   keyboard:  { flexDirection:'row', flexWrap:'wrap', gap:7, justifyContent:'center', width:'100%' },
