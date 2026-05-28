@@ -48,7 +48,7 @@ export default function ResultScreen({ route, navigation }) {
   const msg     = isGreat ? 'Seu cérebro agradece! Você está arrasando! 🧠✨' : isGood ? 'Ótimo trabalho! A prática leva à perfeição!' : 'Cada partida fortalece seu cérebro! Não desista! 💪';
 
   return (
-    <LinearGradient colors={[COLORS.bg, '#F0F4FF', COLORS.bg]} style={[styles.container, { paddingTop:insets.top }]}>
+    <LinearGradient colors={[COLORS.bg, '#161A2E', COLORS.bg]} style={[styles.container, { paddingTop:insets.top }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Animated.View style={{ transform:[{ scale }] }}>
           <Text style={styles.emoji}>{emoji}</Text>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   divider:   { height:1, backgroundColor:COLORS.gray200 },
   achSection:{ width:'100%', gap:8 },
   achTitle:  { fontSize:18, fontWeight:'900', color:COLORS.text, textAlign:'center' },
-  achCard:   { backgroundColor:'#FFFBEB', borderRadius:RADIUS.md, padding:14, borderWidth:2, borderColor:COLORS.amber, alignItems:'center' },
+  achCard:   { backgroundColor:'#292218', borderRadius:RADIUS.md, padding:14, borderWidth:2, borderColor:COLORS.amber, alignItems:'center' },
   achText:   { fontSize:15, fontWeight:'800', color:COLORS.amberDark },
   primaryBtn:{ width:'100%' },
   primaryGrad:{ borderRadius:RADIUS.full, padding:18, alignItems:'center', ...SHADOW.strong },
