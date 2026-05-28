@@ -11,11 +11,13 @@ const { width: SCREEN_W } = Dimensions.get('window');
 export default function WordSearchGame({ route, navigation }) {
   const { level }    = route.params;
   const insets       = useSafeAreaInsets();
-  const [gs, setGs]  = useState(() => WordSearchEngine.setup(level));
-  const [score, setScore] = useState(0);
+  const [gs, setGs]      = useState(() => WordSearchEngine.setup(level));
+  const [score, setScore]  = useState(0);
+  const [revealing, setRevealing] = useState(false);
   const lastFound    = useRef(null);
   const startAt      = useRef(Date.now());
   const flashAnim    = useRef(new Animated.Value(0)).current;
+  const scoreRef     = useRef(0);
 
   // Grid position para converter toque em (row, col)
   const gridRef  = useRef(null);
@@ -26,7 +28,25 @@ export default function WordSearchGame({ route, navigation }) {
   const timerRef = useRef(null);
   const releaseRef = useRef(null);
 
-  const timer = useGameTimer(level, () => releaseRef.current?.());
+  const timer = useGameTimer(level, () => {
+    // Confirma seleção pendente
+    setGs(prev => {
+      if (prev.selection.length === 0) return prev;
+      const confirmed = WordSearchEngine.confirmSelection(prev);
+      if (confirmed.lastFound) {
+        flash();
+        lastFound.current = confirmed.lastFound;
+        const pts = WordSearchEngine.calcScore(confirmed.found.length, confirmed.words.length, 0, level);
+        setScore(pts);
+        scoreRef.current = pts;
+        return confirmed;
+      }
+      return { ...prev, selection: [] };
+    });
+    // Revela as palavras não encontradas por 2s
+    setRevealing(true);
+    setTimeout(() => finish(scoreRef.current), 2000);
+  });
   timerRef.current = timer;
 
   function finish(s) {
@@ -55,6 +75,7 @@ export default function WordSearchGame({ route, navigation }) {
           timerRef.current?.secs ?? 30, level
         );
         setScore(pts);
+        scoreRef.current = pts;
         if (WordSearchEngine.isComplete(confirmed)) {
           setTimeout(() => finish(pts), 800);
         }
@@ -80,8 +101,21 @@ export default function WordSearchGame({ route, navigation }) {
       onStartShouldSetPanResponderCapture: () => true,
 
       onPanResponderGrant: (evt) => {
-        const cell = cellFromTouch(evt.nativeEvent.pageX, evt.nativeEvent.pageY);
-        if (cell) setGs(prev => ({ ...prev, selection: [cell] }));
+        const pageX = evt.nativeEvent.pageX;
+        const pageY = evt.nativeEvent.pageY;
+        // Re-mede a posição da grade a cada gesto para corrigir offset acumulado
+        if (gridRef.current) {
+          gridRef.current.measureInWindow((x, y, width) => {
+            const cellSize = Math.floor(width / gsRef.current.size);
+            gridPos.current = { x, y, cellSize };
+            const col = Math.floor((pageX - x) / cellSize);
+            const row = Math.floor((pageY - y) / cellSize);
+            const size = gsRef.current.size;
+            if (row >= 0 && row < size && col >= 0 && col < size) {
+              setGs(prev => ({ ...prev, selection: [{ row, col }] }));
+            }
+          });
+        }
       },
 
       onPanResponderMove: (evt) => {
@@ -133,9 +167,13 @@ export default function WordSearchGame({ route, navigation }) {
   }
 
   function getCellState(row, col) {
-    const isSelected = gs.selection.some(c => c.row === row && c.col === col);
-    const foundWord  = gs.found.find(w => gs.wordPositions[w]?.some(c => c.row === row && c.col === col));
-    return { isSelected, foundWord: foundWord || null };
+    const isSelected  = gs.selection.some(c => c.row === row && c.col === col);
+    const foundWord   = gs.found.find(w => gs.wordPositions[w]?.some(c => c.row === row && c.col === col));
+    const unfoundWord = revealing && !foundWord
+      ? gs.words.filter(w => !gs.found.includes(w))
+          .find(w => gs.wordPositions[w]?.some(c => c.row === row && c.col === col))
+      : null;
+    return { isSelected, foundWord: foundWord || null, unfoundWord: unfoundWord || null };
   }
 
   // Tamanho de célula dinâmico para caber na tela
@@ -191,22 +229,24 @@ export default function WordSearchGame({ route, navigation }) {
         {gs.grid.map((rowArr, ri) => (
           <View key={ri} style={styles.gridRow}>
             {rowArr.map((letter, ci) => {
-              const { isSelected, foundWord } = getCellState(ri, ci);
+              const { isSelected, foundWord, unfoundWord } = getCellState(ri, ci);
               return (
                 <View
                   key={ci}
                   style={[
                     styles.cell,
                     { width: cellSize, height: cellSize },
-                    isSelected && styles.cellSelected,
-                    foundWord  && styles.cellFound,
+                    isSelected   && styles.cellSelected,
+                    foundWord    && styles.cellFound,
+                    unfoundWord  && styles.cellUnfound,
                   ]}
                 >
                   <Text style={[
                     styles.cellText,
                     { fontSize: cellSize < 28 ? 11 : 13 },
-                    isSelected && styles.cellTextSelected,
-                    foundWord  && styles.cellTextFound,
+                    isSelected   && styles.cellTextSelected,
+                    foundWord    && styles.cellTextFound,
+                    unfoundWord  && styles.cellTextUnfound,
                   ]}>
                     {letter}
                   </Text>
@@ -273,9 +313,11 @@ const styles = StyleSheet.create({
   cell:          { alignItems:'center', justifyContent:'center', borderWidth:0.5, borderColor:COLORS.gray200, backgroundColor:COLORS.white },
   cellSelected:  { backgroundColor:'#1E3A5F' },
   cellFound:     { backgroundColor:'#14532D' },
+  cellUnfound:   { backgroundColor:'#7F1D1D' },
   cellText:      { fontWeight:'700', color:COLORS.gray700 },
-  cellTextSelected: { color:'#93C5FD', fontWeight:'900' },
-  cellTextFound:    { color:COLORS.mint, fontWeight:'900' },
+  cellTextSelected:  { color:'#93C5FD', fontWeight:'900' },
+  cellTextFound:     { color:COLORS.mint, fontWeight:'900' },
+  cellTextUnfound:   { color:'#FCA5A5', fontWeight:'900' },
 
   hint:      { textAlign:'center', color:COLORS.gray500, fontSize:13, fontWeight:'600', paddingVertical:6 },
 
