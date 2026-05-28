@@ -147,8 +147,8 @@ import { SequenceEngine } from '../shared/utils/gameEngine';
 export function SequenceGame({ route, navigation }) {
   const { level } = route.params;
   const insets    = useSafeAreaInsets();
-  const cfg       = SequenceEngine.setup(level);
-  const [seq, setSeq]   = useState(() => SequenceEngine.generate(cfg.length));
+  const cfg       = useRef(SequenceEngine.setup(level)).current;
+  const [seq, setSeq]   = useState(() => SequenceEngine.generate(cfg.length, cfg.options));
   const [input, setInput]= useState([]);
   const [phase, setPhase]= useState('show');
   const [msg, setMsg]    = useState('👀 Memorize a sequência!');
@@ -190,7 +190,7 @@ export function SequenceGame({ route, navigation }) {
       setMsg(ok ? `✅ Correto! +${pts}` : `❌ Era: ${seq.join(' ')}`);
       setPhase('feedback');
       setTimeout(() => {
-        const ns = SequenceEngine.generate(cfg.length);
+        const ns = SequenceEngine.generate(cfg.length, cfg.options);
         setSeq(ns); setInput([]); setRound(r=>r+1); setPhase('show');
         setMsg('👀 Memorize a sequência!');
       }, 1600);
@@ -214,7 +214,7 @@ export function SequenceGame({ route, navigation }) {
         </View>
         {phase==='input' && <>
           <View style={seq_s.optGrid}>
-            {SequenceEngine.OPTIONS.map(e => (
+            {cfg.options.map(e => (
               <TouchableOpacity key={e} onPress={()=>select(e)} style={seq_s.opt} activeOpacity={0.8}>
                 <Text style={seq_s.optText}>{e}</Text>
               </TouchableOpacity>
@@ -333,7 +333,7 @@ export function MathGame({ route, navigation }) {
     const ok = val === prob.answer;
     if (ok) { setScore(s=>s+MathEngine.calcScore(level)); setCorrect(c=>c+1); }
     else Vibration.vibrate(80);
-    setTimeout(()=>{ setProb(MathEngine.next(level)); setAnswered(false); setChosen(null); }, 800);
+    setTimeout(()=>{ setProb(MathEngine.next(level, prob.answer)); setAnswered(false); setChosen(null); }, 800);
   }
 
   return (
