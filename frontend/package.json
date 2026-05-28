@@ -36,18 +36,4 @@
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
     ]
   },
-  "expo": {
-    "name": "Mente Viva 🧠",
-    "slug": "mente-viva",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "splash": { "backgroundColor": "#FF6B9D" },
-    "android": {
-      "package":    "com.menteviva.app",
-      "versionCode": 1,
-      "adaptiveIcon": { "backgroundColor": "#FF6B9D" },
-      "permissions": []
-    },
-    "plugins": ["expo-haptics"]
-  }
 }
