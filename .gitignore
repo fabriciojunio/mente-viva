@@ -1,0 +1,15 @@
+node_modules/
+.expo/
+dist/
+build/
+coverage/
+*.apk
+*.aab
+*.keystore
+google-service-account.json
+.env
+.env.local
+backend/data/db.json
+backend/data/test_db.json
+.DS_Store
+*.log

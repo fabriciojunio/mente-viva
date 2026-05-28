@@ -1,0 +1,24 @@
+{
+  "cli": { "version": ">= 5.9.1" },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": { "buildType": "apk" }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": { "buildType": "apk" },
+      "env": { "EXPO_PUBLIC_API_URL": "http://SEU-IP-LOCAL:3001/api/v1" }
+    },
+    "production": {
+      "android": { "buildType": "app-bundle" },
+      "env": { "EXPO_PUBLIC_API_URL": "https://sua-api.railway.app/api/v1" }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": { "serviceAccountKeyPath": "./google-service-account.json", "track": "internal" }
+    }
+  }
+}
