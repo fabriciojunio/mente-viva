@@ -1,0 +1,75 @@
+name: Gerar APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Compilar APK Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar dependencias do frontend
+        working-directory: frontend
+        run: npm install
+
+      - name: Gerar projeto Android nativo
+        working-directory: frontend
+        env:
+          CI: '1'
+          EXPO_NO_TELEMETRY: '1'
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Permissao de execucao no Gradle
+        working-directory: frontend/android
+        run: chmod +x gradlew
+
+      - name: Compilar APK debug
+        working-directory: frontend/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Renomear APK
+        run: |
+          mkdir -p dist
+          cp frontend/android/app/build/outputs/apk/debug/app-debug.apk dist/mente-viva.apk
+
+      - name: Salvar APK como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: mente-viva.apk
+          path: dist/mente-viva.apk
+          retention-days: 90
+
+      - name: Publicar Release com o APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="apk-$(date +'%Y%m%d-%H%M')"
+          gh release create "$TAG" dist/mente-viva.apk \
+            --title "Mente Viva - APK Android" \
+            --notes "## Como instalar no celular
+
+          1. Baixe o arquivo \`mente-viva.apk\` abaixo
+          2. No celular Android, va em **Configuracoes > Seguranca**
+          3. Ative **Fontes desconhecidas** (ou *Instalar apps desconhecidos*)
+          4. Toque no arquivo baixado e instale
+
+          Funciona 100% sem internet. Nao precisa de conta. Gratuito."
