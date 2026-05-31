@@ -315,7 +315,7 @@ Após o deploy, edite o `frontend/eas.json`:
 
 ## Licença
 
-MIT © 2026 — Código aberto para que mais pessoas possam usar e adaptar.
+MIT © 2026. Código aberto para que mais pessoas possam usar e adaptar.
 
 Use, modifique, distribua, coloque sua marca — sem precisar pedir permissão.
 
