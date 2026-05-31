@@ -1,4 +1,4 @@
-# 🔒 LGPD — Lei Geral de Proteção de Dados
+# 🔒 LGPD: Lei Geral de Proteção de Dados
 
 Este documento descreve como o **Mente Viva** trata os dados pessoais dos usuários, em conformidade com a Lei nº 13.709/2018 (LGPD).
 
@@ -96,7 +96,7 @@ Em caso de incidente de segurança com dados pessoais:
 ## 📍 Localização dos Dados
 
 Os dados são armazenados:
-1. **No dispositivo do usuário** (AsyncStorage — primário, offline-first)
+1. **No dispositivo do usuário** (AsyncStorage, primário, offline-first)
 2. **No servidor da aplicação** (banco de dados JSON — sincronização)
 
 Não há transferência internacional de dados.
