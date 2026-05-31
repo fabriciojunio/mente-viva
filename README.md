@@ -2,7 +2,7 @@
 
 **Exercícios cognitivos gratuitos para ajudar na prevenção do Alzheimer.**
 
-Um app mobile feito com amor — para mães, avós, tias e qualquer pessoa que queira manter o cérebro ativo. Baseado em pesquisas científicas reais.
+Um app mobile feito com amor, para mães, avós, tias e qualquer pessoa que queira manter o cérebro ativo. Baseado em pesquisas científicas reais.
 
 [![CI](https://github.com/fabriciojunio/mente-viva/actions/workflows/ci.yml/badge.svg)](https://github.com/fabriciojunio/mente-viva/actions)
 [![Testes](https://img.shields.io/badge/testes-206%2F206%20✅-brightgreen)]()
@@ -16,7 +16,7 @@ Um app mobile feito com amor — para mães, avós, tias e qualquer pessoa que q
 
 Mente Viva nasceu de uma necessidade real: dar para quem a gente ama uma ferramenta simples, gratuita e eficaz para treinar o cérebro todos os dias.
 
-**Se você quiser pegar esse projeto e usar para ajudar outras pessoas — seja sua família, sua comunidade, uma ONG, um grupo de idosos — fique à vontade.** O código é MIT, totalmente aberto. Você pode usar, modificar, distribuir e até colocar sua própria identidade visual sem precisar pedir permissão.
+**Se você quiser pegar esse projeto e usar para ajudar outras pessoas (seja sua família, sua comunidade, uma ONG, um grupo de idosos), fique à vontade.** O código é MIT, totalmente aberto. Você pode usar, modificar, distribuir e até colocar sua própria identidade visual sem precisar pedir permissão.
 
 Se quiser contribuir de volta com melhorias, será muito bem-vinda. Veja o [guia de contribuição](CONTRIBUTING.md).
 
@@ -48,13 +48,13 @@ Se quiser contribuir de volta com melhorias, será muito bem-vinda. Veja o [guia
 
 Cada jogo tem 3 níveis: **Fácil 🌱 / Normal ⭐ / Difícil 🔥**
 
-Funciona **100% offline** — nenhum dado sai do celular.
+Funciona **100% offline**: nenhum dado sai do celular.
 
 ---
 
 ## Instalar no celular (Android)
 
-### Opção 1 — Baixar o APK pronto
+### Opção 1: Baixar o APK pronto
 
 > Se já existe uma release publicada neste repositório, clique em **[Releases](../../releases)** e baixe o arquivo `.apk` mais recente.
 
@@ -65,7 +65,7 @@ Para instalar o APK no celular:
 4. Ative **"Fontes desconhecidas"** ou **"Instalar apps de fontes desconhecidas"**
 5. Toque no arquivo `.apk` baixado e siga as instruções
 
-### Opção 2 — Gerar o APK você mesmo
+### Opção 2: Gerar o APK você mesmo
 
 Veja a seção [Gerar APK](#-gerar-apk-para-o-celular) mais abaixo.
 
@@ -115,7 +115,7 @@ Escaneie o QR code com o app **[Expo Go](https://expo.dev/client)** no seu celul
 ### 4. Rodar os testes
 
 ```bash
-# Backend — 126 testes
+# Backend: 126 testes
 cd backend
 node --test tests/unit/entities/player.test.js \
      tests/unit/entities/session-achievement.test.js \
@@ -123,7 +123,7 @@ node --test tests/unit/entities/player.test.js \
      tests/security/validators.test.js \
      tests/integration/api.test.js
 
-# Frontend — 80 testes
+# Frontend: 80 testes
 cd frontend
 node --test __tests__/gameEngine.test.js __tests__/storage.test.js
 ```
@@ -134,13 +134,13 @@ node --test __tests__/gameEngine.test.js __tests__/storage.test.js
 
 Você precisa de uma conta gratuita no [expo.dev](https://expo.dev).
 
-### Passo 1 — Instalar o EAS CLI
+### Passo 1: Instalar o EAS CLI
 
 ```bash
 npm install -g eas-cli
 ```
 
-### Passo 2 — Login e configuração
+### Passo 2: Login e configuração
 
 ```bash
 cd frontend
@@ -148,7 +148,7 @@ eas login              # Entre com sua conta expo.dev
 eas build:configure    # Configura o projeto (só na primeira vez)
 ```
 
-### Passo 3 — Gerar o APK
+### Passo 3: Gerar o APK
 
 ```bash
 eas build --platform android --profile preview
@@ -156,7 +156,7 @@ eas build --platform android --profile preview
 
 Aguarde cerca de 10–15 minutos. O EAS vai te enviar um link para baixar o `.apk`.
 
-### Passo 4 — Instalar no celular
+### Passo 4: Instalar no celular
 
 Baixe o `.apk` pelo link recebido e siga a [Opção 1](#opção-1--baixar-o-apk-pronto) acima.
 
@@ -166,7 +166,7 @@ Baixe o `.apk` pelo link recebido e siga a [Opção 1](#opção-1--baixar-o-apk-
 
 ```
 mente-viva/
-├── backend/                          # API REST — Node.js + Express
+├── backend/                          # API REST: Node.js + Express
 │   └── src/
 │       ├── domain/                   # Regras de negócio (sem deps externas)
 │       │   ├── entities/             # Player, Session, Achievement
@@ -181,7 +181,7 @@ mente-viva/
 │           ├── middlewares/          # Validação, erros, rate limiting
 │           └── routes/               # Definição das rotas
 │
-└── frontend/                         # React Native — Expo
+└── frontend/                         # React Native: Expo
     └── src/
         ├── screens/                  # Todas as telas do app
         │   ├── WordSearchGame.js     # 🔍 Caça-palavras
@@ -192,7 +192,7 @@ mente-viva/
         │   ├── components/           # GameHeader e componentes compartilhados
         │   └── theme/                # Cores, sombras, tipografia
         └── services/
-            ├── storage.js            # AsyncStorage — offline-first
+            ├── storage.js            # AsyncStorage: offline-first
             └── api.js                # API com fallback offline automático
 ```
 
@@ -209,7 +209,7 @@ GET  /api/v1/tips                      → Dica do dia + base científica
 POST /api/v1/players                   → Criar jogadora
 GET  /api/v1/players/:id               → Perfil + conquistas + histórico
 PUT  /api/v1/players/:id               → Atualizar nome
-DELETE /api/v1/players/:id             → Remover conta (soft delete — LGPD)
+DELETE /api/v1/players/:id             → Remover conta (soft delete: LGPD)
 
 POST /api/v1/sessions                  → Salvar partida
 GET  /api/v1/sessions/:id              → Histórico + estatísticas
@@ -222,7 +222,7 @@ POST /api/v1/privacy/:id/deletion      → Solicitar exclusão (LGPD)
 
 ## Variáveis de ambiente
 
-### Backend — copie `.env.example` para `.env`
+### Backend: copie `.env.example` para `.env`
 
 ```env
 PORT=3001
@@ -251,7 +251,7 @@ EXPO_PUBLIC_API_URL=http://10.0.2.2:3001/api/v1
 - **CORS:** Whitelist explícita, nunca wildcard `*`
 - **Rate limiting:** 200 req/15min geral; 20/15min em criação de perfis
 - **Validação:** Todos os inputs validados com whitelist de valores permitidos
-- **XSS:** Nome da jogadora validado com regex — apenas letras, espaços e acentos
+- **XSS:** Nome da jogadora validado com regex: apenas letras, espaços e acentos
 - **Logs:** Nunca logam dados pessoais
 - **LGPD:** Soft delete; exportação e deleção de dados implementadas
 
@@ -292,7 +292,7 @@ EXPO_PUBLIC_API_URL=http://10.0.2.2:3001/api/v1
 
 Quer adicionar um novo jogo? Mais palavras para o caça-palavras? Suporte a outro idioma? Acesso mais fácil para idosos?
 
-Veja o [guia de contribuição](CONTRIBUTING.md) — está detalhado e acolhedor para iniciantes.
+Veja o [guia de contribuição](CONTRIBUTING.md): está detalhado e acolhedor para iniciantes.
 
 ---
 
@@ -302,7 +302,7 @@ Para publicar na Play Store, o backend precisa de URL pública. Opções gratuit
 
 | Serviço | Plano gratuito |
 |---------|---------------|
-| [Railway.app](https://railway.app) | Sim — mais fácil |
+| [Railway.app](https://railway.app) | Sim: mais fácil |
 | [Render.com](https://render.com) | Sim |
 | [Fly.io](https://fly.io) | Sim |
 
@@ -317,14 +317,14 @@ Após o deploy, edite o `frontend/eas.json`:
 
 MIT © 2026. Código aberto para que mais pessoas possam usar e adaptar.
 
-Use, modifique, distribua, coloque sua marca — sem precisar pedir permissão.
+Use, modifique, distribua, coloque sua marca, sem precisar pedir permissão.
 
 ---
 
 ## Base científica
 
 - Advanced Cognitive Training for Independent and Vital Elderly (ACTIVE) Study
-- University of Exeter & King's College London — 19.000 participantes
-- McGill University — de Villers-Sidani Lab, 2024
+- University of Exeter & King's College London (19.000 participantes)
+- McGill University, de Villers-Sidani Lab, 2024
 - Lancet Commission on Dementia Prevention, Intervention and Care, 2024
-- Rush University Medical Center — Bronx Aging Study
+- Rush University Medical Center, Bronx Aging Study
