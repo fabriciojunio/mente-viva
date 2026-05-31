@@ -1,7 +1,7 @@
 {
   "name": "mente-viva-backend",
   "version": "1.0.0",
-  "description": "API REST para o app Mente Viva — prevenção cognitiva baseada em evidências",
+  "description": "API REST para o app Mente Viva: prevenção cognitiva baseada em evidências",
   "main": "src/server.js",
   "type": "commonjs",
   "scripts": {

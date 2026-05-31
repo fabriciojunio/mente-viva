@@ -1,4 +1,4 @@
-# Como Contribuir — Mente Viva 🧠
+# Como Contribuir: Mente Viva 🧠
 
 Obrigada por querer ajudar! Mente Viva é um projeto comunitário: qualquer pessoa pode contribuir para que mais gente mantenha o cérebro ativo e previna o Alzheimer.
 
@@ -126,4 +126,4 @@ Comportamentos não aceitos: discriminação, assédio, spam.
 
 ---
 
-Dúvidas? Abra uma [Issue](https://github.com/fabriciojunio/mente-viva/issues) — vamos ajudar! 💕
+Dúvidas? Abra uma [Issue](https://github.com/fabriciojunio/mente-viva/issues) e vamos ajudar! 💕
