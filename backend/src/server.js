@@ -45,6 +45,11 @@ function createApp(env) {
     referrerPolicy:     { policy: 'strict-origin-when-cross-origin' },
     permittedCrossDomainPolicies: false,
   }));
+  // Permissions-Policy não é coberto pelo Helmet v7 — definido manualmente.
+  app.use((req, res, next) => {
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+    next();
+  });
   app.set('x-powered-by', false);
 
   // ── CORS ───────────────────────────────────────────────────────────────────
