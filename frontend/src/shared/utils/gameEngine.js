@@ -318,7 +318,11 @@ export const WordSearchEngine = {
     const wordPositions = {}; // { WORD: [{row,col},...] }
 
     for (const rawWord of words) {
-      const word = rawWord.toUpperCase().replace(/[^A-Z]/g, '');
+      // Remove acentos preservando a letra base (CÃO -> CAO, PAÇOCA -> PACOCA)
+      // em vez de descartar a letra acentuada e truncar a palavra.
+      const word = rawWord
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toUpperCase().replace(/[^A-Z]/g, '');
       if (!word.length) continue;
 
       let placedOk = false;
