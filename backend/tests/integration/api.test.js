@@ -210,6 +210,17 @@ describe('API Integration', () => {
       const r = await req('GET', '/health');
       assert.ok(!r.headers['x-powered-by']);
     });
+
+    test('envia Permissions-Policy restritiva', async () => {
+      const r = await req('GET', '/health');
+      assert.ok(r.headers['permissions-policy']);
+      assert.match(r.headers['permissions-policy'], /camera=\(\)/);
+    });
+
+    test('envia X-Frame-Options DENY', async () => {
+      const r = await req('GET', '/health');
+      assert.equal(r.headers['x-frame-options'], 'DENY');
+    });
   });
 
   describe('404 handler', () => {

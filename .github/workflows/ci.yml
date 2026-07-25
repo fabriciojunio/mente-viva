@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master, main, develop]
   pull_request:
-    branches: [main]
+    branches: [master, main]
 
 jobs:
   test-backend:
@@ -27,12 +27,11 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      - name: Rodar testes unitários e de segurança
-        run: |
-          node --test tests/unit/entities/player.test.js \
-               tests/unit/entities/session-achievement.test.js \
-               tests/unit/use-cases/game-engine.test.js \
-               tests/security/validators.test.js
+      - name: Auditar dependências (falha em vulnerabilidade alta)
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Rodar testes unitários, de integração e de segurança
+        run: npm test
 
   test-frontend:
     name: Testes Frontend

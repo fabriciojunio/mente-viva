@@ -5,7 +5,7 @@
 Um app mobile feito com amor, para mães, avós, tias e qualquer pessoa que queira manter o cérebro ativo. Baseado em pesquisas científicas reais.
 
 [![CI](https://github.com/fabriciojunio/mente-viva/actions/workflows/ci.yml/badge.svg)](https://github.com/fabriciojunio/mente-viva/actions)
-[![Testes](https://img.shields.io/badge/testes-206%2F206%20✅-brightgreen)]()
+[![Testes](https://img.shields.io/badge/testes-208%2F208%20✅-brightgreen)]()
 [![LGPD](https://img.shields.io/badge/LGPD-compliant-blue)]()
 [![Offline](https://img.shields.io/badge/offline--first-100%25-orange)]()
 [![Licença](https://img.shields.io/badge/licença-MIT-green)]()
@@ -115,13 +115,9 @@ Escaneie o QR code com o app **[Expo Go](https://expo.dev/client)** no seu celul
 ### 4. Rodar os testes
 
 ```bash
-# Backend: 126 testes
+# Backend: 128 testes
 cd backend
-node --test tests/unit/entities/player.test.js \
-     tests/unit/entities/session-achievement.test.js \
-     tests/unit/use-cases/game-engine.test.js \
-     tests/security/validators.test.js \
-     tests/integration/api.test.js
+npm test
 
 # Frontend: 80 testes
 cd frontend
