@@ -14,7 +14,6 @@ function buildRoutes(ctrl) {
 
   // Players
   r.post  ('/players',     validate(validatePlayerBody),  ctrl.createPlayer);
-  r.get   ('/players',                                    ctrl.getAllPlayers);
   r.get   ('/players/:id', validateIdParam,               ctrl.getPlayer);
   r.put   ('/players/:id', validateIdParam,               ctrl.updatePlayer);
   r.delete('/players/:id', validateIdParam,               ctrl.deletePlayer);

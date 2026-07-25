@@ -17,13 +17,6 @@ function buildControllers({ useCases, tipRepo }) {
       res.status(201).json({ data: result.value });
     },
 
-    async getAllPlayers(req, res, next) {
-      try {
-        const players = useCases.playerRepo.findAll().map(p => p.toPublic());
-        res.json({ data: players });
-      } catch (err) { next(err); }
-    },
-
     async getPlayer(req, res, next) {
       const result = await useCases.getPlayer(req.params.id);
       if (!result.ok) return next(result.error);
